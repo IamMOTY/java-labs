@@ -31,7 +31,7 @@ public class RecursiveWalk {
         } catch (FileSystemException e) {
             System.err.printf("Filesystem error - %s", e.getMessage());
         } catch (IOException e) {
-            System.err.println(e);
+            System.err.printf("IOException - %s",e);
         }
 
     }
@@ -43,9 +43,9 @@ public class RecursiveWalk {
             this.output = output;
         }
 
+        @Override
         public FileVisitResult visitFile(Path file,
                                          BasicFileAttributes attr) {
-
             long hash = 0;
             try (InputStream reader =
                          Files.newInputStream(file)) {
