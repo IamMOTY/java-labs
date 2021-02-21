@@ -1,4 +1,4 @@
 package info.kgeorgiy.ja.buduschev.walk;
 
-public class Walk {
+public class Walk extends RecursiveWalk {
 }
