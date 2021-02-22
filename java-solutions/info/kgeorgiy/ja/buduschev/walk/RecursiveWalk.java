@@ -3,7 +3,6 @@ package info.kgeorgiy.ja.buduschev.walk;
 
 import info.kgeorgiy.ja.buduschev.utils.HashFunctions;
 
-import javax.crypto.spec.PSource;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -17,11 +16,13 @@ public class RecursiveWalk {
             System.err.println("Invalid count of arguments");
         } else
             try {
-            	//finals?
-                Path inputFile = Path.of(args[0]);
-                Path outputFile = Path.of(args[1]);
+                final Path inputFile = Path.of(args[0]);
+                final Path outputFile = Path.of(args[1]);
+                if (outputFile.getParent() != null) {
+                    Files.createDirectories(outputFile.getParent());
+                }
                 Files.createFile(outputFile);
-              	//directories?
+
                 if (Files.isSameFile(inputFile, outputFile)) {
                     System.err.println("Arguments is the same files.");
                 } else
