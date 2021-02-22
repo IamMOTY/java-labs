@@ -46,7 +46,7 @@ public class RecursiveWalk {
             } catch (FileSystemException e) {
                 System.err.printf("Filesystem error - %s%n", e.getMessage());
             } catch (SecurityException e) {
-                System.err.printf("Security error - %s", e.getMessage());
+                System.err.printf("Security error - %s%n", e.getMessage());
             } catch (IOException e) {
                 System.err.printf("IOException - %s%n", e);
             }
