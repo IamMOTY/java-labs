@@ -17,10 +17,11 @@ public class RecursiveWalk {
             System.err.println("Invalid count of arguments");
         } else
             try {
+            	//finals?
                 Path inputFile = Path.of(args[0]);
                 Path outputFile = Path.of(args[1]);
                 Files.createFile(outputFile);
-
+              	//directories?
                 if (Files.isSameFile(inputFile, outputFile)) {
                     System.err.println("Arguments is the same files.");
                 } else
