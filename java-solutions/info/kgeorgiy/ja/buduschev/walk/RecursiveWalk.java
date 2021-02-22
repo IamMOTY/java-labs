@@ -3,6 +3,7 @@ package info.kgeorgiy.ja.buduschev.walk;
 
 import info.kgeorgiy.ja.buduschev.utils.HashFunctions;
 
+import javax.crypto.spec.PSource;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -18,11 +19,9 @@ public class RecursiveWalk {
             try {
                 Path inputFile = Path.of(args[0]);
                 Path outputFile = Path.of(args[1]);
-                if (Files.isDirectory(inputFile)) {
-                    System.err.println("Input file argument is a directory.");
-                } else if (Files.isDirectory(outputFile)) {
-                    System.err.println("Output file argument is a directory.");
-                } else if (Files.isSameFile(inputFile, outputFile)) {
+                Files.createFile(outputFile);
+
+                if (Files.isSameFile(inputFile, outputFile)) {
                     System.err.println("Arguments is the same files.");
                 } else
                     try (BufferedReader reader = Files.newBufferedReader(inputFile);
@@ -35,6 +34,7 @@ public class RecursiveWalk {
                             }
                         }
                     }
+
             } catch (InvalidPathException e) {
                 System.err.printf("Invalid path in arguments - %s%n", e.getMessage());
             } catch (AccessDeniedException e) {
@@ -45,6 +45,8 @@ public class RecursiveWalk {
                 System.err.printf("File not found - %s%n", e.getMessage());
             } catch (FileSystemException e) {
                 System.err.printf("Filesystem error - %s%n", e.getMessage());
+            } catch (SecurityException e) {
+                System.err.printf("Security error - %s", e.getMessage());
             } catch (IOException e) {
                 System.err.printf("IOException - %s%n", e);
             }
