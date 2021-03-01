@@ -26,30 +26,30 @@ public class RecursiveWalk {
                 if (Files.isSameFile(inputFile, outputFile)) {
                     System.err.println("Arguments is the same files.");
                 } else
-                    try (BufferedReader reader = Files.newBufferedReader(inputFile);
-                         BufferedWriter writer = Files.newBufferedWriter(outputFile)) {
+                    try (final BufferedReader reader = Files.newBufferedReader(inputFile);
+                         final BufferedWriter writer = Files.newBufferedWriter(outputFile)) {
                         for (String path : reader.lines().collect(Collectors.toList())) {
                             try {
-                                Files.walkFileTree(Path.of(path), new RecursiveWalk.PrintHash(writer));
-                            } catch (IOException | InvalidPathException e) {
+                                Files.walkFileTree(Path.of(path), new PrintHash(writer));
+                            } catch (final IOException | InvalidPathException e) {
                                 printHash(writer, 0, path);
                             }
                         }
                     }
 
-            } catch (InvalidPathException e) {
+            } catch (final InvalidPathException e) {
                 System.err.printf("Invalid path in arguments - %s%n", e.getMessage());
-            } catch (AccessDeniedException e) {
+            } catch (final AccessDeniedException e) {
                 System.err.printf("Access denied - %s%n", e.getMessage());
-            } catch (NoSuchFileException e) {
+            } catch (final NoSuchFileException e) {
                 System.err.printf("No such file - %s%n", e.getMessage());
-            } catch (FileNotFoundException e) {
+            } catch (final FileNotFoundException e) {
                 System.err.printf("File not found - %s%n", e.getMessage());
-            } catch (FileSystemException e) {
+            } catch (final FileSystemException e) {
                 System.err.printf("Filesystem error - %s%n", e.getMessage());
-            } catch (SecurityException e) {
+            } catch (final SecurityException e) {
                 System.err.printf("Security error - %s%n", e.getMessage());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 System.err.printf("IOException - %s%n", e);
             }
 
