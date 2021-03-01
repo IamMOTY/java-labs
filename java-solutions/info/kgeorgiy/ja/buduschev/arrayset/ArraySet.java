@@ -5,6 +5,7 @@ import java.util.*;
 
 public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSet<E> {
     private final ReversibleArrayList<E> array;
+    // :NOTE: super?
     private final Comparator<E> comparator;
 
     public ArraySet() {
