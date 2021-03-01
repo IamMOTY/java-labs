@@ -3,7 +3,7 @@ package info.kgeorgiy.ja.buduschev.arrayset;
 
 import java.util.*;
 
-public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
+public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSet<E> {
     private final ReversibleArrayList<E> array;
     private final Comparator<E> comparator;
 
@@ -12,9 +12,9 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
     }
 
     public ArraySet(Collection<E> array, Comparator<E> comparator) {
-        TreeSet tree = new TreeSet(comparator);
+        TreeSet<E> tree = new TreeSet<>(comparator);
         tree.addAll(array);
-        this.array = new ReversibleArrayList<E>(tree);
+        this.array = new ReversibleArrayList<>(tree);
         this.comparator = comparator;
     }
 
@@ -31,7 +31,7 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
         this(array, null);
     }
 
-    private ArraySet(Comparator comparator) {
+    private ArraySet(Comparator<E> comparator) {
         this(new ReversibleArrayList<>(), comparator);
     }
 
@@ -130,7 +130,7 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
         if (comparator != null) {
             return comparator.compare(var1, var2);
         }
-        return ((Comparable) var1).compareTo(var2);
+        return ((Comparable<E>) var1).compareTo(var2);
     }
 
     @Override
