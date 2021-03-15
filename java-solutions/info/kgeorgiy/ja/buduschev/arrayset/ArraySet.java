@@ -27,14 +27,9 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
         this.comparator = comparator;
     }
 
-    private ArraySet(ReversibleArrayList<E> array) {
-        this(array, null);
-    }
-
     private ArraySet(Comparator<? super E> comparator) {
         this(new ReversibleArrayList<>(), comparator);
     }
-
 
     private int binarySearch(E e) {
         return Collections.binarySearch(array, e, comparator);
