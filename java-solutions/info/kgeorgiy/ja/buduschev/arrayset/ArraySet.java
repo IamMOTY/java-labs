@@ -5,21 +5,20 @@ import java.util.*;
 
 public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSet<E> {
     private final ReversibleArrayList<E> array;
-    // :NOTE: super?
-    private final Comparator<E> comparator;
+    private final Comparator<? super E> comparator;
 
     public ArraySet() {
         this(new ReversibleArrayList<>(), null);
     }
 
-    public ArraySet(Collection<E> array, Comparator<E> comparator) {
+    public ArraySet(Collection<? extends E> array, Comparator<? super E> comparator) {
         TreeSet<E> tree = new TreeSet<>(comparator);
         tree.addAll(array);
         this.array = new ReversibleArrayList<>(tree);
         this.comparator = comparator;
     }
 
-    public ArraySet(Collection<E> array) {
+    public ArraySet(Collection<? extends E> array) {
         this(array, null);
     }
 
@@ -32,7 +31,7 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
         this(array, null);
     }
 
-    private ArraySet(Comparator<E> comparator) {
+    private ArraySet(Comparator<? super E> comparator) {
         this(new ReversibleArrayList<>(), comparator);
     }
 
@@ -58,7 +57,7 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
      * @return position of element x, if inclusive is true x <= otherwise, x < e.
      * if element can't be founded, it returns array size.
      */
-    private int upper(E e, boolean inclusive) {
+    private int getIndexOfUpper(E e, boolean inclusive) {
         return combSearch(e, inclusive, -1, 1);
     }
 
@@ -68,37 +67,37 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
      * @return position of element x, if inclusive is true x <= e otherwise, x < e.
      * if element can't be founded, it returns -1.
      */
-    private int lower(E e, boolean inclusive) {
+    private int getIndexOfLower(E e, boolean inclusive) {
         return combSearch(e, inclusive, -2, -1);
     }
 
     @Override
     public boolean contains(Object o) {
         final int position = binarySearch((E) o);
-        return position >= 0 && position < array.size();
+        return position >= 0 && position < size();
     }
 
     @Override
     public E lower(E e) {
-        final int position = lower(e, false);
-        return (position < 0) ? null : array.get(position);
+        final int position = getIndexOfLower(e, false);
+        return (position < 0) ? null : get(position);
     }
 
     @Override
     public E floor(E e) {
-        final int position = lower(e, true);
-        return (position < 0) ? null : array.get(position);
+        final int position = getIndexOfLower(e, true);
+        return (position < 0) ? null : get(position);
     }
 
     @Override
     public E ceiling(E e) {
-        final int position = upper(e, true);
-        return (position == array.size()) ? null : array.get(position);
+        final int position = getIndexOfUpper(e, true);
+        return (position == size()) ? null : get(position);
     }
 
     @Override
     public E higher(E e) {
-        final int position = upper(e, false);
+        final int position = getIndexOfUpper(e, false);
         return (position == array.size()) ? null : array.get(position);
     }
 
@@ -139,8 +138,8 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
         if (contains(fromElement) && contains(toElement) && compare(fromElement, toElement) > 0) {
             throw new IllegalArgumentException("FromKey > ToKey");
         }
-        final int left = upper(fromElement, fromInclusive);
-        final int right = lower(toElement, toInclusive);
+        final int left = getIndexOfUpper(fromElement, fromInclusive);
+        final int right = getIndexOfLower(toElement, toInclusive);
         if (left > right) {
             if (compare(fromElement, toElement) <= 0) {
                 return new ArraySet<>(comparator);
@@ -152,13 +151,13 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
 
     @Override
     public ArraySet<E> headSet(E toElement, boolean inclusive) {
-        final int position = lower(toElement, inclusive);
+        final int position = getIndexOfLower(toElement, inclusive);
         return (size() == 0 || position == -1) ? new ArraySet<>(comparator) : subSet(first(), true, toElement, inclusive);
     }
 
     @Override
     public ArraySet<E> tailSet(E fromElement, boolean inclusive) {
-        final int position = upper(fromElement, inclusive);
+        final int position = getIndexOfUpper(fromElement, inclusive);
         return (size() == 0 || position == size()) ? new ArraySet<>(comparator) : subSet(fromElement, inclusive, last(), true);
     }
 
@@ -184,18 +183,19 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
 
     @Override
     public E first() {
-        if (array.isEmpty()) {
-            throw new NoSuchElementException();
-        }
-        return array.get(0);
+        return get(0);
     }
 
     @Override
     public E last() {
+        return get(size() - 1);
+    }
+
+    private E get(int i) {
         if (array.isEmpty()) {
             throw new NoSuchElementException();
         }
-        return array.get(array.size() - 1);
+        return array.get(i);
     }
 
     @Override

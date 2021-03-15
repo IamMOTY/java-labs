@@ -1,22 +1,24 @@
 package info.kgeorgiy.ja.buduschev.arrayset;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.RandomAccess;
+import java.util.*;
 
 public class ReversibleArrayList<E> extends AbstractList<E> implements RandomAccess {
     private final ArrayList<E> array;
     private final boolean isReversed;
 
-    public ReversibleArrayList(Collection<E> array, boolean isReversed) {
+    public ReversibleArrayList(Collection<? extends E> array, boolean isReversed) {
         this.array = new ArrayList<>(array);
         this.isReversed = isReversed;
     }
 
-    public ReversibleArrayList(Collection<E> array) {
+    public ReversibleArrayList(Collection<? extends E> array) {
         this.array = new ArrayList<>(array);
         this.isReversed = false;
+    }
+
+    public ReversibleArrayList(ArrayList<E> array, boolean isReversed) {
+        this.array = array;
+        this.isReversed = isReversed;
     }
 
     public ReversibleArrayList() {
