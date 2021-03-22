@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StudentDB implements GroupQuery {
-    private final static Comparator<Student> nameComparator =
+    private static final Comparator<Student> nameComparator =
             Comparator.comparing(Student::getLastName, Comparator.reverseOrder())
                     .thenComparing(Student::getFirstName, Comparator.reverseOrder())
                     .thenComparing(Student::getId);
-    private final static Collector<Student, ?, Set<String>> distinctCollector =
+    private static final Collector<Student, ?, Set<String>> distinctCollector =
             Collectors.mapping(Student::getFirstName, Collectors.toCollection(TreeSet::new));
 
     @Override
