@@ -1,5 +1,7 @@
 package info.kgeorgiy.ja.buduschev.student;
 
+import info.kgeorgiy.java.advanced.student.*;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
