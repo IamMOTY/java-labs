@@ -121,6 +121,7 @@ public class Implementor implements Impler, JarImpler {
         }
         try (final BufferedWriter out = Files.newBufferedWriter(sourcePath)) {
             out.write(toUTF32(CodeGenerator.genImplementation(token)));
+            // :NOTE: message/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -179,6 +180,7 @@ public class Implementor implements Impler, JarImpler {
             }
             final Manifest manifest = new Manifest();
             manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+            // :NOTE: utf8
             try (final JarOutputStream jarOutputStream = new JarOutputStream(Files.newOutputStream(jarFile), manifest)) {
                 final String name = String.join(
                         "",
