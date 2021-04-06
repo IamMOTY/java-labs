@@ -4,6 +4,7 @@ ARTIFACTS=$JAROOT/artifacts
 LIB=$JAROOT/lib
 MODULES=$ARTIFACTS/info.kgeorgiy.java.advanced.base.jar:$ARTIFACTS/info.kgeorgiy.java.advanced.implementor.jar:$LIB/junit-4.11.jar
 cd ../java-solutions || exit
+mkdir "_build"
 javac --module-path=$MODULES info/kgeorgiy/ja/buduschev/implementor/Implementor.java module-info.java -d _build
 cd _build || exit
 printf "Manifest-Version: 1.0\nMain-Class: info.kgeorgiy.ja.buduschev.implementor.Implementor\nClass-Path: %s/artifacts/info.kgeorgiy.java.advanced.implementor.jar\n" $JAROOT > MANIFEST.MF
