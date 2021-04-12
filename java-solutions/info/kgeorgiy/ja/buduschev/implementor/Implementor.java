@@ -173,7 +173,7 @@ public class Implementor implements Impler, JarImpler {
             if (compiler == null) {
                 throw new ImplerException("Could not find java compiler");
             }
-            final String[] args = {file, "-cp", String.join(File.pathSeparator, tempDir.toString(), getClassPath(token))};
+            final String[] args = {file, "-cp", String.join(File.pathSeparator, tempDir.toString(), getClassPath(token)), "-encoding", "UTF-8"};
             final int exitCode = compiler.run(null, null, null, args);
             if (exitCode != 0) {
                 throw new ImplerException("An error occurred while compiling implementation");
