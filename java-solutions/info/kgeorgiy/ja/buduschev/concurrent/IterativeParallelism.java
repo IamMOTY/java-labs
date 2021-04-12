@@ -60,7 +60,7 @@ public class IterativeParallelism implements ListIP {
     }
 
     private <T, R> Stream<R> processTasks(final int countOfThreads, final List<? extends T> list, Function<Stream<? extends T>, ? extends R> f) {
-        final int countOfSegments = Integer.max(Integer.min(countOfThreads, list.size()), 1);
+        final int countOfSegments = Integer.min(countOfThreads, list.size());
         final int sizeOfSegment = list.size() / countOfSegments;
         int rest = list.size() % countOfSegments;
         List<R> result = new ArrayList<>();
@@ -73,11 +73,11 @@ public class IterativeParallelism implements ListIP {
             result.add(null);
             final int pos = i;
             final List<? extends T> segment = list.subList(start, end);
-            threads.add(new Thread(() -> result.set(pos, f.apply(segment.stream()))));
-        }
-        for (Thread thread : threads) {
+            Thread thread = new Thread(() -> result.set(pos, f.apply(segment.stream())));
+            threads.add(thread);
             thread.start();
         }
+
         for (Thread thread : threads) {
             try {
                 thread.join();
