@@ -66,6 +66,7 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
         return combSearch(e, inclusive, -2, -1);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean contains(Object o) {
         final int position = binarySearch((E) o);
@@ -121,6 +122,7 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
         return this.descendingSet().iterator();
     }
 
+    @SuppressWarnings("unchecked")
     private int compare(E var1, E var2) {
         if (comparator != null) {
             return comparator.compare(var1, var2);
