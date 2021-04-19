@@ -66,8 +66,8 @@ public class ArraySet<E> extends AbstractSet<E> implements java.util.NavigableSe
         return combSearch(e, inclusive, -2, -1);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean contains(Object o) {
         final int position = binarySearch((E) o);
         return position >= 0 && position < size();
