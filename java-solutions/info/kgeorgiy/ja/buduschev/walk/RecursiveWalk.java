@@ -15,6 +15,10 @@ public class RecursiveWalk {
             try {
                 final Path inputFile = Path.of(args[0]);
                 final Path outputFile = Path.of(args[1]);
+                if (!Files.isReadable(inputFile) || Files.isDirectory(inputFile)) {
+                    System.err.println("Can't read file");
+                    return;
+                }
                 if (outputFile.getParent() != null) {
                     Files.createDirectories(outputFile.getParent());
                 }
