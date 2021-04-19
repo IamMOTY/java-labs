@@ -13,20 +13,8 @@ public class RecursiveWalk {
             System.err.println("Invalid count of arguments");
         } else
             try {
-                final Path inputFile;
-                final Path outputFile;
-                try {
-                    inputFile = Path.of(args[0]);
-                } catch (InvalidPathException e) {
-                    System.err.println("Invalid input path in arguments");
-                    return;
-                }
-                try {
-                    outputFile = Path.of(args[0]);
-                } catch (InvalidPathException e) {
-                    System.err.println("Invalid output path in arguments");
-                    return;
-                }
+                final Path inputFile = Path.of(args[0]);
+                final Path outputFile = Path.of(args[1]);
                 if (outputFile.getParent() != null) {
                     Files.createDirectories(outputFile.getParent());
                 }
