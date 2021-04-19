@@ -4,7 +4,6 @@ module info.kgeorgiy.ja.buduschev.implementor {
         exports info.kgeorgiy.ja.buduschev.implementor;
         opens info.kgeorgiy.ja.buduschev.implementor;
         opens info.kgeorgiy.ja.buduschev.student;
-        opens info.kgeorgiy.ja.buduschev.utils;
         opens info.kgeorgiy.ja.buduschev.walk;
         opens info.kgeorgiy.ja.buduschev.arrayset;
 }
