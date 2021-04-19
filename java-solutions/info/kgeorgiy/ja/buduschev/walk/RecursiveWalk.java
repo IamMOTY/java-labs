@@ -30,7 +30,7 @@ public class RecursiveWalk {
                          final BufferedWriter writer = Files.newBufferedWriter(outputFile)) {
                         for (String path : reader.lines().collect(Collectors.toList())) {
                             try {
-                                Files.walkFileTree(Path.of(path), new PrintHash(writer));
+                                Files.walkFileTree(Path.of(path), new RecursiveWalk.PrintHash(writer));
                             } catch (final IOException | InvalidPathException e) {
                                 printHash(writer, 0, path);
                             }
