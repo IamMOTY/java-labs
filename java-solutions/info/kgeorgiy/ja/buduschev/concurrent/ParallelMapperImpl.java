@@ -2,11 +2,14 @@ package info.kgeorgiy.ja.buduschev.concurrent;
 
 import info.kgeorgiy.java.advanced.mapper.ParallelMapper;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 public class ParallelMapperImpl implements ParallelMapper {
-    private static final int TASKS_CAPACITY = 128;
     private final List<Thread> threads;
     private final Queue<Runnable> tasks;
 
@@ -21,10 +24,12 @@ public class ParallelMapperImpl implements ParallelMapper {
     @Override
     public <T, R> List<R> map(final Function<? super T, ? extends R> f, final List<? extends T> args) throws InterruptedException {
         Results<R> result = new Results<>(args.size());
-        for (int i = 0; i < args.size(); i++) {
-            final int pos = i;
-            addTask(() -> result.set(pos, f.apply(args.get(pos))));
-        }
+        IntStream.range(0, args.size()).forEach(pos -> {
+            try {
+                addTask(() -> result.set(pos, f.apply(args.get(pos))));
+            } catch (InterruptedException ignored) {
+            }
+        });
         return result.toList();
     }
 
@@ -58,9 +63,6 @@ public class ParallelMapperImpl implements ParallelMapper {
 
     private void addTask(final Runnable task) throws InterruptedException {
         synchronized (tasks) {
-            while (tasks.size() == TASKS_CAPACITY) {
-                tasks.wait();
-            }
             tasks.add(task);
             tasks.notifyAll();
         }
