@@ -6,4 +6,5 @@ module info.kgeorgiy.ja.buduschev.implementor {
         opens info.kgeorgiy.ja.buduschev.student;
         opens info.kgeorgiy.ja.buduschev.walk;
         opens info.kgeorgiy.ja.buduschev.arrayset;
+        opens info.kgeorgiy.ja.buduschev.crawler;
 }
