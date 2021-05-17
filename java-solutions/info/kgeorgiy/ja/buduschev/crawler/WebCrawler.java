@@ -22,6 +22,7 @@ public class WebCrawler implements Crawler {
         this.hostWorkers = new ConcurrentHashMap<>();
     }
 
+    // :NOTE: too big method, java.concurrent.util classes?
     @Override
     public Result download(final String url, final int maxDepth) {
         final Phaser phaser = new Phaser(1);
