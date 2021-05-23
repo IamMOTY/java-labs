@@ -54,8 +54,7 @@ public class WebCrawler implements Crawler {
                             try {
                                 final List<String> links = document.extractLinks();
                                 for (String link : links) {
-                                    if (!visited.contains(link)) {
-                                        visited.add(link);
+                                    if (visited.add(link)) {
                                         newLinks.add(link);
                                     }
                                 }
@@ -80,8 +79,26 @@ public class WebCrawler implements Crawler {
 
     @Override
     public void close() {
-        extractorPool.shutdownNow();
-        downloaderPool.shutdownNow();
+        shutdownAndAwaitTermination(extractorPool);
+        shutdownAndAwaitTermination(downloaderPool);
+    }
+
+    void shutdownAndAwaitTermination(ExecutorService pool) {
+        pool.shutdown(); // Disable new tasks from being submitted
+        try {
+            // Wait a while for existing tasks to terminate
+            if (!pool.awaitTermination(3, TimeUnit.SECONDS)) {
+                pool.shutdownNow(); // Cancel currently executing tasks
+                // Wait a while for tasks to respond to being cancelled
+                if (!pool.awaitTermination(3, TimeUnit.SECONDS))
+                    System.err.println("Pool did not terminate");
+            }
+        } catch (InterruptedException ie) {
+            // (Re-)Cancel if current thread also interrupted
+            pool.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        }
     }
 
     private class hostWorker {
