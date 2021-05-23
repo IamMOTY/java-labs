@@ -28,9 +28,9 @@ public class HelloUDPClient implements HelloClient {
             try (final DatagramSocket socket = new DatagramSocket()) {
                 socket.setSoTimeout(SO_TIMEOUT);
                 final int sendBufferSize = socket.getSendBufferSize();
-                final DatagramPacket requestPacket = new DatagramPacket(new byte[sendBufferSize], sendBufferSize, serverAddress);
+                final DatagramPacket packet = new DatagramPacket(new byte[sendBufferSize], sendBufferSize, serverAddress);
                 for (int request = 0; request < requests; request++) {
-                    handleRequest(prefix, serverAddress, thread, socket, requestPacket, request);
+                    handleRequest(prefix, serverAddress, thread, socket, packet, request);
                 }
             } catch (SocketException e) {
                 System.err.printf("Error occur, while creating socket: %s%n", e.getLocalizedMessage());
@@ -38,23 +38,23 @@ public class HelloUDPClient implements HelloClient {
         });
     }
 
-    private void handleRequest(String prefix, SocketAddress serverAddress, int thread, DatagramSocket socket, DatagramPacket requestPacket, int request) {
+    private void handleRequest(String prefix, SocketAddress serverAddress, int thread, DatagramSocket socket, DatagramPacket packet, int request) {
         String message = String.format("%s%d_%d", prefix, thread, request);
         System.out.printf("Sent     ~ %s%n", message);
-        while (!makeRequest(serverAddress, socket, requestPacket, message)) { }
+        while (!makeRequest(socket, packet, message)) { }
     }
 
     /**
      * @return true if request accepted
      */
-    private boolean makeRequest(SocketAddress serverAddress, DatagramSocket socket, DatagramPacket requestPacket, String message) {
+    private boolean makeRequest(DatagramSocket socket, DatagramPacket packet, String message) {
         try {
-            requestPacket.setData(message.getBytes(StandardCharsets.UTF_8));
-            socket.send(requestPacket);
+            packet.setData(message.getBytes(StandardCharsets.UTF_8));
+            socket.send(packet);
             final int receiveBufferSize = socket.getReceiveBufferSize();
-            DatagramPacket responsePaket = new DatagramPacket(new byte[receiveBufferSize], receiveBufferSize, serverAddress);
-            socket.receive(responsePaket);
-            String response = new String(responsePaket.getData(), responsePaket.getOffset(), responsePaket.getLength(), StandardCharsets.UTF_8);
+            packet.setData(new byte[receiveBufferSize]);
+            socket.receive(packet);
+            String response = new String(packet.getData(), packet.getOffset(), packet.getLength(), StandardCharsets.UTF_8);
             if (response.contains(message)) {
                 System.out.printf("Received ~ %s%n", response);
                 return true;
