@@ -3,6 +3,7 @@ package info.kgeorgiy.ja.buduschev.bank;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -10,6 +11,7 @@ public class RemoteBank implements Bank {
     private final int port;
     private final ConcurrentMap<String, Account> accounts = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Person> persons = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Set<String>> subIds = new ConcurrentHashMap<>();
 
     public RemoteBank(final int port) {
         this.port = port;
@@ -39,6 +41,7 @@ public class RemoteBank implements Bank {
     public Person createPerson(String firstName, String lastName, String passportId) throws RemoteException {
         final Person person = new RemotePerson(firstName, lastName, passportId, this);
         if (persons.putIfAbsent(passportId, person) == null) {
+            subIds.put(passportId, ConcurrentHashMap.newKeySet());
             System.out.printf("Creating person %s%n", passportId);
             UnicastRemoteObject.exportObject(person, port);
             return person;
@@ -65,9 +68,18 @@ public class RemoteBank implements Bank {
 
     public Map<String, Account> getAccounts(final Person person) throws RemoteException {
         final Map<String, Account> result = new ConcurrentHashMap<>();
-        for (String id : person.getSubIds()) {
+        for (String id : getSubIds(person)) {
             result.put(id, accounts.get(person.getAccountId(id)));
         }
         return result;
+    }
+
+    public void putSubId(final String passwordId, final String subId) {
+        subIds.get(passwordId).add(subId);
+    }
+
+
+    private Set<String> getSubIds(final Person person) throws RemoteException {
+        return subIds.get(person.getPassportId());
     }
 }

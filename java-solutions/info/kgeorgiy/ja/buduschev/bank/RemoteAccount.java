@@ -1,36 +1,11 @@
 package info.kgeorgiy.ja.buduschev.bank;
 
-public class RemoteAccount implements Account {
-    private final String id;
-    private int amount;
-
-    public RemoteAccount(final String id) {
-        this.id = id;
-        amount = 0;
+public class RemoteAccount extends AbstractAccount implements Account {
+    public RemoteAccount(String id) {
+        super(id);
     }
 
-    @Override
-    public String getId() {
-        return id;
+    public RemoteAccount(String id, int amount) {
+        super(id, amount);
     }
-
-    @Override
-    public synchronized int getAmount() {
-        System.out.println("Getting amount of money for account " + id);
-        return amount;
-    }
-
-    @Override
-    public synchronized void setAmount(final int amount) {
-        System.out.println("Setting amount of money for account " + id);
-        this.amount = amount;
-    }
-
-    @Override
-    public synchronized void addAmount(final int addition) {
-        System.out.println("Setting amount of money for account " + id);
-        this.amount += addition;
-    }
-
-
 }

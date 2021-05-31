@@ -29,4 +29,5 @@ public interface Bank extends Remote {
 
     Map<String, Account> getAccounts(Person person) throws RemoteException;
 
+    void putSubId(final String passwordId, final String subId) throws RemoteException;
 }
