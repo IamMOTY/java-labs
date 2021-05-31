@@ -24,4 +24,9 @@ public abstract class AbstractPerson implements Serializable {
     public String getPassportId() {
         return passportId;
     }
+
+
+    public String getAccountId(final String subId) {
+        return getPassportId() + ":" + subId;
+    }
 }

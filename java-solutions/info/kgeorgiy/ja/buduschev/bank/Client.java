@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Client {
-
-
     public static void main(String[] args) {
         if (args == null || args.length != 5) {
             System.err.println("Invalid count of arguments, must be 5");

@@ -18,10 +18,6 @@ public class RemotePerson extends AbstractPerson implements Person {
         return bank.getAccount(subId);
     }
 
-    public String getAccountId(final String subId) throws RemoteException {
-        return getPassportId() + ":" + subId;
-    }
-
     @Override
     public Map<String, Account> getAccounts() throws RemoteException {
         System.out.printf("Getting accounts for person: %s%n", getPassportId());
