@@ -1,9 +1,12 @@
 package info.kgeorgiy.ja.buduschev.bank;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -50,6 +53,12 @@ public class BankTests {
             System.out.println("Remote exception while getting bank: " + e.getMessage());
         }
     }
+
+    @After
+    public void end() {
+        System.out.println("Testing end.");
+    }
+
 
     private void createPerson() throws RemoteException {
         createPerson(PASSPORT);
@@ -286,6 +295,10 @@ public class BankTests {
     }
 
     public static void main(String[] args) {
-        JUnitCore.runClasses(BankTests.class);
+        JUnitCore junit = new JUnitCore();
+        junit.addListener(new TextListener(System.out));
+        Result result = junit.run(BankTests.class);
+        System.out.println(result);
+        System.exit(0);
     }
 }
