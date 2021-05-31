@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 root=../../../../../../
+ls $root
 rm -rf ${root}build
 mkdir ${root}build
 build=${root}build

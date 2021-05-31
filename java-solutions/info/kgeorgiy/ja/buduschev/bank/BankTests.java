@@ -298,7 +298,7 @@ public class BankTests {
         JUnitCore junit = new JUnitCore();
         junit.addListener(new TextListener(System.out));
         Result result = junit.run(BankTests.class);
-        System.out.println(result);
-        System.exit(0);
+        System.out.println(result.getFailureCount());
+        System.exit(result.wasSuccessful() ? 1 : 0);
     }
 }
