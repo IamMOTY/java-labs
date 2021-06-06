@@ -1,17 +1,12 @@
 package info.kgeorgiy.ja.buduschev.hello;
 
-import info.kgeorgiy.java.advanced.hello.HelloClient;
-
 import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class HelloUDPClient implements HelloClient {
-    private final static int SO_TIMEOUT = 50;
+public class HelloUDPClient extends AbstractClient {
 
     @Override
     public void run(String host, int port, String prefix, int threads, int requests) {
@@ -30,7 +25,7 @@ public class HelloUDPClient implements HelloClient {
                 final int sendBufferSize = socket.getSendBufferSize();
                 final DatagramPacket packet = new DatagramPacket(new byte[sendBufferSize], sendBufferSize, serverAddress);
                 for (int request = 0; request < requests; request++) {
-                    handleRequest(prefix, serverAddress, thread, socket, packet, request);
+                    handleRequest(prefix, thread, socket, packet, request);
                 }
             } catch (SocketException e) {
                 System.err.printf("Error occur, while creating socket: %s%n", e.getLocalizedMessage());
@@ -38,10 +33,11 @@ public class HelloUDPClient implements HelloClient {
         });
     }
 
-    private void handleRequest(String prefix, SocketAddress serverAddress, int thread, DatagramSocket socket, DatagramPacket packet, int request) {
-        String message = String.format("%s%d_%d", prefix, thread, request);
-        System.out.printf("Sent     ~ %s%n", message);
-        while (!makeRequest(socket, packet, message)) { }
+    private void handleRequest(String prefix, int thread, DatagramSocket socket, DatagramPacket packet, int request) {
+        String message = genMessage(prefix, thread, request);
+        logSent(message);
+        while (!makeRequest(socket, packet, message)) {
+        }
     }
 
     /**
@@ -56,7 +52,7 @@ public class HelloUDPClient implements HelloClient {
             socket.receive(packet);
             String response = new String(packet.getData(), packet.getOffset(), packet.getLength(), StandardCharsets.UTF_8);
             if (response.contains(message)) {
-                System.out.printf("Received ~ %s%n", response);
+                logReceived(response);
                 return true;
             }
         } catch (IOException e) {
@@ -65,26 +61,9 @@ public class HelloUDPClient implements HelloClient {
         return false;
     }
 
+
     public static void main(String[] args) {
-        if (args == null || args.length != 5) {
-            System.err.println("Invalid count of arguments!");
-            return;
-        }
-        if (Arrays.stream(args).anyMatch(Objects::isNull)) {
-            System.err.println("Null value found in arguments");
-            return;
-        }
-        final String host = args[0];
-        try {
-            final int port = Integer.parseInt(args[1]);
-            final String prefix = args[2];
-            final int threads = Integer.parseInt(args[3]);
-            final int requests = Integer.parseInt(args[4]);
-            final HelloClient client = new HelloUDPClient();
-            client.run(host, port, prefix, threads, requests);
-        } catch (NumberFormatException e) {
-            System.err.println("Integer value required!");
-        }
+        main(args, HelloUDPClient::new);
     }
 
 }

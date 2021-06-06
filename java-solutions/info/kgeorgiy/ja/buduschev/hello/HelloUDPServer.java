@@ -1,19 +1,15 @@
 package info.kgeorgiy.ja.buduschev.hello;
 
 
-import info.kgeorgiy.java.advanced.hello.HelloServer;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class HelloUDPServer implements HelloServer {
+public class HelloUDPServer extends AbstractServer {
     private DatagramSocket socket;
     private ExecutorService handlers;
 
@@ -40,8 +36,9 @@ public class HelloUDPServer implements HelloServer {
             DatagramPacket receivePacket = new DatagramPacket(new byte[sendBufferSize], sendBufferSize);
             try {
                 socket.receive(receivePacket);
-                final String response = String.format("Hello, %s",
-                        new String(receivePacket.getData(),
+                final String response = genResponse(
+                        new String(
+                                receivePacket.getData(),
                                 receivePacket.getOffset(),
                                 receivePacket.getLength(),
                                 StandardCharsets.UTF_8));
@@ -60,22 +57,6 @@ public class HelloUDPServer implements HelloServer {
     }
 
     public static void main(String[] args) {
-        if (args == null || args.length != 2) {
-            System.err.println("Invalid count of arguments!");
-            return;
-        }
-        if (Arrays.stream(args).anyMatch(Objects::isNull)) {
-            System.err.println("Null value found in arguments");
-            return;
-        }
-        try {
-            final int port = Integer.parseInt(args[0]);
-            final int threads = Integer.parseInt(args[1]);
-            try (final HelloServer server = new HelloUDPServer()) {
-                server.start(port, threads);
-            }
-        } catch (NumberFormatException e) {
-            System.err.println("Integer required!");
-        }
+        main(args, HelloUDPServer::new);
     }
 }
