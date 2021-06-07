@@ -13,11 +13,6 @@ public class NumStatistics extends AbstractStatistics<Number> {
         this.itemToValue = new LinkedHashMap<>();
     }
 
-    @Override
-    public void add(String item) {
-        throw new UnsupportedOperationException();
-    }
-
     public void add(Number number) {
         double value = number.doubleValue();
         sumItems += number.doubleValue();

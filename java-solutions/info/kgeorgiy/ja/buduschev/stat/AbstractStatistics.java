@@ -9,7 +9,9 @@ public abstract class AbstractStatistics<T> implements Statistic<T> {
         count = 0;
     }
 
-    public abstract void add(String item);
+    public void add(String item) {
+        throw new UnsupportedOperationException();
+    };
 
     public int getCount() {
         return count;

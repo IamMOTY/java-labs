@@ -16,11 +16,6 @@ public class DateStatistics extends AbstractStatistics<Date> {
     }
 
     @Override
-    public void add(String item) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public int getUniqueCount() {
         return itemToValue.size();
     }
