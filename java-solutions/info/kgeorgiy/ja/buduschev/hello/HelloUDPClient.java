@@ -21,7 +21,7 @@ public class HelloUDPClient extends AbstractClient {
     private void handleThread(String prefix, int requests, SocketAddress serverAddress, ExecutorService handlers, int thread) {
         handlers.submit(() -> {
             try (final DatagramSocket socket = new DatagramSocket()) {
-                socket.setSoTimeout(SO_TIMEOUT);
+                socket.setSoTimeout(S_LIMIT);
                 final int sendBufferSize = socket.getSendBufferSize();
                 final DatagramPacket packet = new DatagramPacket(new byte[sendBufferSize], sendBufferSize, serverAddress);
                 for (int request = 0; request < requests; request++) {
