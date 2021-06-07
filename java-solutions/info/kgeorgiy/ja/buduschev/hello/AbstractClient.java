@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 public abstract class AbstractClient implements HelloClient {
     protected final static int BUFFER_SIZE = 1024;
+    // :NOTE: SOCKET_LIMIT_IN_MILLIS
     protected final static int S_LIMIT = 50;
 
     protected String genMessage(final String prefix, final int thread, final int request) {

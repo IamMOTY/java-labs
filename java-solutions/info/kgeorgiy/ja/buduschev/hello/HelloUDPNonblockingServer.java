@@ -58,6 +58,7 @@ public class HelloUDPNonblockingServer extends AbstractServer {
                 selector.selectNow(key -> {
                     if (key.isReadable()) {
                         try {
+                            // :NOTE: const buffer
                             ByteBuffer byteBuffer = ByteBuffer.allocate(BUFFER_SIZE);
                             SocketAddress socketAddress = serverChannel.receive(byteBuffer);
                             if (socketAddress != null) {
@@ -81,6 +82,7 @@ public class HelloUDPNonblockingServer extends AbstractServer {
                     }
                 });
             } catch (IOException e) {
+                // :NOTE: printStackTrace
                 e.printStackTrace();
             }
         }
