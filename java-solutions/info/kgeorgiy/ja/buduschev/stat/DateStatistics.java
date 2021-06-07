@@ -20,7 +20,7 @@ public class DateStatistics extends AbstractStatistics<Date> {
         return itemToValue.size();
     }
 
-    public void add(String item, Date date) {
+    public void add(final String item, final Date date) {
         sumItems += date.getTime();
         count++;
         itemToValue.putIfAbsent(item, date);

@@ -40,7 +40,7 @@ public class FullStatistic {
     }
 
 
-    public FullStatistic(String text, Locale locale) {
+    public FullStatistic(final String text, final Locale locale) {
         this.text = text;
         this.locale = locale;
         this.collator = Collator.getInstance(locale);
@@ -96,7 +96,7 @@ public class FullStatistic {
         return dateStats;
     }
 
-    private LexicalStatistics getLexicalStats(BreakIterator boundary) {
+    private LexicalStatistics getLexicalStats(final BreakIterator boundary) {
         LexicalStatistics words = new LexicalStatistics(collator);
         boundary.setText(text);
         iterateBy(boundary, words::add, true);

@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static String readAll(Path path) throws IOException {
+    public static String readAll(final Path path) throws IOException {
         StringBuilder sb = new StringBuilder();
         try (Stream<String> stream = Files.lines(path, StandardCharsets.UTF_8)) {
             stream.forEach(s -> sb.append(s).append(System.lineSeparator()));
@@ -24,7 +24,7 @@ public class Main {
      * {@code <inputLocale> <outPutLocale> <inputFile> <outputFile>}
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         if (args == null) {
             System.err.println("Arguments is null");
             return;

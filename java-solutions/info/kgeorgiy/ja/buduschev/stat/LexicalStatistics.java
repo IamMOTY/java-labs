@@ -29,7 +29,7 @@ public class LexicalStatistics extends AbstractStatistics<String> {
     }
 
     @Override
-    public void add(String item) {
+    public void add(final String item) {
         sumItems += item.length();
         count++;
         itemsToCount.computeIfPresent(item, (k, v) -> v + 1);

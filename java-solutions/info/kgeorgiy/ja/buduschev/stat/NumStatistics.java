@@ -13,7 +13,7 @@ public class NumStatistics extends AbstractStatistics<Number> {
         this.itemToValue = new LinkedHashMap<>();
     }
 
-    public void add(Number number) {
+    public void add(final Number number) {
         double value = number.doubleValue();
         sumItems += number.doubleValue();
         count++;

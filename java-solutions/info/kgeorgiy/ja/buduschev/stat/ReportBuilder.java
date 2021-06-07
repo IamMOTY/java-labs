@@ -15,7 +15,6 @@ public class ReportBuilder {
     private final Path file;
     private final NumberFormat numberFormat;
     private final DateFormat dateFormat;
-    private final NumberFormat currencyFormat;
     private final Map<String, LexicalStatistics> lexicalMap;
     private final Map<String, NumStatistics> numMap;
     private final String report;
@@ -27,7 +26,7 @@ public class ReportBuilder {
         this.locale = locale;
         numberFormat = NumberFormat.getNumberInstance(locale);
         dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-        currencyFormat = NumberFormat.getCurrencyInstance(locale);
+        final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(locale);
         bundle = ResourceBundle.getBundle("info.kgeorgiy.ja.buduschev.stat.ResourceBundle", locale);
         lexicalMap = Map.of(
                 "word", fullStatistic.getWords(),
