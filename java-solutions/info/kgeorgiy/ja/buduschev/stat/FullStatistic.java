@@ -44,6 +44,7 @@ public class FullStatistic {
         this.text = text;
         this.locale = locale;
         this.collator = Collator.getInstance(locale);
+        collator.setStrength(Collator.PRIMARY);
         words = getLexicalStats(BreakIterator.getWordInstance(locale));
         sentences = getLexicalStats(BreakIterator.getSentenceInstance(locale));
         dates = getStatsDate();
