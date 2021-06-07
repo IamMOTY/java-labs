@@ -26,5 +26,4 @@ public abstract class AbstractStatistics<T> implements Statistic<T> {
     public T getMaxByValue() {
         return maxByValue;
     }
-
 }
